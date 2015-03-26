@@ -75,6 +75,7 @@ void Move(int spR, int spL){
   }
   analogWrite(PWMA,abs(spR));
   analogWrite(PWMB,abs(spL));
+  Serial.print("şlol");
 }
 /*int sensor(int trigPin, int echoPin){
   digitalWrite(trigPin, LOW); 
