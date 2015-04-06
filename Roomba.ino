@@ -11,8 +11,8 @@ int sharpL=A1;
 int sharpF=A2;
 Encoder EncR(5, 6);
 Encoder EncL(8, 9);
-int movedL=0;
-int movedR=0;
+int moved=0;
+
 void setup(){
   pinMode(PWMA, OUTPUT);
   pinMode(PWMB, OUTPUT);
@@ -30,19 +30,12 @@ void setup(){
 
 long oldPosL  = 0;
 long oldPosR  = 0;
+
 void loop(){
   if(analogRead(sharpF)>=500){
-    posL1=oldPosL;
-    posR1=oldPosR;
-    for(int i=0;i<40;i++){
-      Move(-200,-200);
-      delay(1);
-      readEnc();
-    }
-    for(int i=0;i<60;i++){
-      Move(200,-200);
-      delay(1);
-      readEnc();
+    Move(200,-200);
+    Serial.println("back");
+    delay(40);
   }
   else if(analogRead(sharpR)>=500){
     Move(200,10);
@@ -60,7 +53,7 @@ void loop(){
     delay(40);
   }
 }
-readEnc(Encoder enc, int oldPos){
+int Enc(Encoder enc, int oldPos){
   int moved1=moved;
   long newPos = enc.read();
   moved=newPos-oldPos;
@@ -69,10 +62,10 @@ readEnc(Encoder enc, int oldPos){
 }
 void Move(int spR, int spL){
   if (spR<0){
-    digitalWrite(motorR, HIGH);
+    digitalWrite(motorR, LOW);
   }
   else if (spR>0){
-    digitalWrite(motorR,LOW);
+    digitalWrite(motorR,HIGH);
   }
   if (spL<0){
     digitalWrite(motorL, HIGH);
@@ -84,5 +77,27 @@ void Move(int spR, int spL){
   analogWrite(PWMB,abs(spL));
   Serial.print("şlol");
 }
-}
+/*int sensor(int trigPin, int echoPin){
+  digitalWrite(trigPin, LOW); 
+  delayMicroseconds(2); 
+
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10); 
+ 
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+ 
+ //Calculate the distance (in cm) based on the speed of sound.
+  distance = abs(duration/58.2);
+  if (abs(distance) >= maximumRange || abs(distance) <= minimumRange){
+ Send a negative number to computer and Turn LED ON 
+ to indicate "out of range"
+   //Serial.println("-1");
+ }
+ else {
+ Send the distance to the computer using Serial protocol, and
+ turn LED OFF to indicate successful reading.
+  return distance;
+ }
+}*/
   
